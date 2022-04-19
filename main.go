@@ -3,13 +3,40 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/fs"
 	"io/ioutil"
-	"log"
 	"os"
 	"path"
 
+	"github.com/spf13/cobra"
 	siren "github.com/xogeny/go-siren"
 )
+
+func initRoot() *cobra.Command {
+	var rootCmd = cobra.Command{
+		Use:   "lessonplan",
+		Short: "Create Modelica Playground lesson plans",
+		Long:  `Create lesson plans for the Modelica Playground application found at http://playground.modelica.university`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			dir, err := cmd.Flags().GetString("dir")
+			if err != nil {
+				return err
+			}
+			out, err := cmd.Flags().GetString("output")
+			if err != nil {
+				return err
+			}
+			lessons, err := ParseLessons(dir)
+			if err != nil {
+				return err
+			}
+			return OutputLessons(lessons, out)
+		},
+	}
+	rootCmd.PersistentFlags().StringP("dir", "d", ".", "Directory that contains the lesson plan files")
+	rootCmd.PersistentFlags().StringP("output", "o", "lessonplan.json", "Name of file to generate")
+	return &rootCmd
+}
 
 type Lesson struct {
 	Title       string
@@ -30,14 +57,14 @@ type LessonPlan struct {
 }
 
 func main() {
-	lessons, err := ParseLessons(".")
-	if err != nil {
-		log.Fatalf(err.Error())
+	rootCmd := initRoot()
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
-	OutputLessons(lessons)
 }
 
-func OutputLessons(lessons LessonPlan) error {
+func OutputLessons(lessons LessonPlan, outputFile string) error {
 	output := siren.NewSirenEntity()
 	output.Title = lessons.Title
 	for _, lesson := range lessons.Lessons {
@@ -66,8 +93,7 @@ func OutputLessons(lessons LessonPlan) error {
 	if err != nil {
 		return fmt.Errorf("error marshalling lessons: %s", err.Error())
 	}
-	fmt.Printf("%s\n", string(contents))
-	return nil
+	return ioutil.WriteFile(outputFile, contents, fs.FileMode(0777))
 }
 func ParseLessons(dirname string) (LessonPlan, error) {
 	ret := LessonPlan{}
@@ -108,7 +134,7 @@ func ParseLesson(dirname string) (*Lesson, error) {
 	expFile := path.Join(dirname, "explanation.md")
 	explanation, err := fileAsString(expFile)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading '%s': %s", expFile)
+		fmt.Fprintf(os.Stderr, "Error reading '%s': %s", expFile, err.Error())
 	} else {
 		ret.Explanation = explanation
 	}
@@ -116,7 +142,7 @@ func ParseLesson(dirname string) (*Lesson, error) {
 	modelFile := path.Join(dirname, "model.mo")
 	model, err := fileAsString(modelFile)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading '%s': %s", modelFile)
+		fmt.Fprintf(os.Stderr, "Error reading '%s': %s", modelFile, err.Error())
 	} else {
 		ret.Model = model
 	}
@@ -124,7 +150,7 @@ func ParseLesson(dirname string) (*Lesson, error) {
 	repFile := path.Join(dirname, "report.md")
 	report, err := fileAsString(repFile)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading '%s': %s", repFile)
+		fmt.Fprintf(os.Stderr, "Error reading '%s': %s", repFile, err.Error())
 	} else {
 		ret.Report = report
 	}
@@ -132,7 +158,7 @@ func ParseLesson(dirname string) (*Lesson, error) {
 	preFile := path.Join(dirname, "preamble.md")
 	preamble, err := fileAsString(preFile)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error reading '%s': %s", preFile)
+		fmt.Fprintf(os.Stderr, "Error reading '%s': %s", preFile, err.Error())
 	} else {
 		ret.Preamble = preamble
 	}
