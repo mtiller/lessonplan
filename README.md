@@ -130,7 +130,9 @@ From this repository's root directory and then commit the resulting `sample.json
 https://raw.githubusercontent.com/mtiller/lessonplan/master/sample.json
 ```
 
-This, in turn, allows us to reference our lesson plan when accessing the Modelica Playground.
+This, in turn, allows us to reference our lesson plan when accessing the Modelica Playground. To access a lesson plan from the Modelica Playground, simply add the `?toc=<url>` query string. For example, our sample lesson plan can be referenced directory at:
+
+[https://playground.modelica.university?toc=https://raw.githubusercontent.com/mtiller/lessonplan/master/sample.json](https://playground.modelica.university?toc=https://raw.githubusercontent.com/mtiller/lessonplan/master/sample.json)
 
 ## Building from Source
 

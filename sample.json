@@ -1,5 +1,5 @@
 {
-  "title": "Sample Lessonplan",
+  "title": "Sample Lesson Plan",
   "entities": [
     {
       "rel": [
@@ -24,8 +24,8 @@
       ],
       "properties": {
         "model": "Real x = 20.0;\nReal y;\n\nequation\n\ny = sin(time);",
-        "preamble": "{% macro commentary(now) %}\n\nOur solution for $x$ was {{ now.x }} and our solution for $y$ depends on time. Currently, $t={{ now.time}}$ which means that $y={{ now.y }}$.\n\n{% endmacro %}\n",
-        "report": "{{ commentary(now) }}\n"
+        "preamble": "{% macro commentary(now) %}\n\nOur solution for $x$ was {{ now.x }} and our solution for $y$ depends on time. Currently, $t={{ now.time.toFixed(2) }}$ which means that $y={{ now.y.toFixed(2) }}$.\n\n{% endmacro %}\n",
+        "report": "{{ commentary(now) }}\n\n_(Note: you can change the value of time by using the slider above.)_\n"
       }
     }
   ]
