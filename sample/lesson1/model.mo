@@ -1,0 +1,1 @@
+Real x = 5.0 "A variable declaration and equation";

@@ -1,5 +1,5 @@
 VERSION=v1.0.0
-all: darwin linux windows
+all: darwin linux windows sample.json
 
 # Windows Targets
 windows: windows-amd64
@@ -21,3 +21,6 @@ darwin: darwin-arm64
 # Mac Architectures
 darwin-arm64:
 	GOOS=darwin GOARCH=arm64 go build -o lessonplan-$(VERSION)-darwin-amd64 .
+
+sample.json: 
+	./lessonplan -d sample -o sample.json
