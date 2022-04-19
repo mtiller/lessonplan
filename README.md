@@ -95,6 +95,17 @@ other files.
 
 When done, your directory structure should look like this:
 
+```
+<dir>/
+  index.json
+  <each lesson directory>/
+    index.json
+    model.mo
+    explanation.md // optional
+    report.md // optional
+    preamble.md // optional
+```
+
 ## Generating a Lesson Plan
 
 To generate the lesson plan, just run the following command:
@@ -123,6 +134,8 @@ This, in turn, allows us to reference our lesson plan when accessing the Modelic
 
 ## Building from Source
 
-```
+To build from source, you need to have `go` installed. Once that is done, building is as simple as:
 
+```sh
+$ go build .
 ```
