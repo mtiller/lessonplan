@@ -56,7 +56,7 @@ Now, in each directory, create another `index.json` file. However, the
 
 ### Model
 
-In additional the the `index.json` file, you'll need to create a `model.mo` file
+In addition to the `index.json` file, you'll need to create a `model.mo` file
 that contains the Modelica code associated with this lesson.
 
 ### Explanation
@@ -84,11 +84,11 @@ Playground application allows users to modify models and simulation reports
 including any predefined templates in the URL. This is because if included it
 would contribute the overall URL length. But since these templating preambles
 are not meant to be modified and are directly associated with specific lessons,
-we have carved them out into a separate file to help keep the `report.mod` file
+we have carved them out into a separate file to help keep the `report.md` file
 just to what the user might wish to modify.
 
 If you wish to define templating macros for use in your `report.md` file, add
-them to a file named `preamble.md` and place them alongside `report.mod` and the
+them to a file named `preamble.md` and place them alongside `report.md` and the
 other files.
 
 ### Complete Directory Structure
